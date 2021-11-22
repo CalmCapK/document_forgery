@@ -1,0 +1,107 @@
+config_name: 'base'
+
+mode: 'test'  #train, test, infer
+gpu: [0,1]
+local_rank: 0
+world_size: 1
+workers: 2
+seed: 111
+use_amp: False
+parallel_type: 'Single'  # Single , DataParallel, Distributed, Distributed_Apex, Horovod 
+
+
+data_type: 'data1' #data_srnet data_imgur5k
+batch_size: 32
+max_iters: 1 #500000 
+data_shape: [63, None]
+model_type: 'srnet'
+optimizer_type: 'Adam'
+train_log_interval: 1 #50
+valid_interval: 1 #1000
+test_interval: 1
+save_ckpt_interval: 1 #5000
+is_load_weight: True
+
+save:
+  result_path: '../chinese2_exp1_20211108031308_srnet_epoch_000002_best'
+  result_path2: '../chinese2_exp1_20211108031308_srnet_epoch_000002_best'
+  record_name: 'test'
+  log_path: 'logs'
+  train_checkpoint_file: 'train_log.txt'
+  valid_sample_path: 'valid_samples'
+  test_sample_path: 'test_samples'
+  save_weigth_path: 'weights'
+  
+
+load:
+    #load_weight_path: '/home/kezhiying/document_forgery/SRNet_pytorch/logs/train_step-299000.model.bak'
+    load_weight_path: '/data/kzy/results_chinese2/20211108031308/weights/srnet_epoch_000002_best.pth'
+    #load_weight_path: '/home/kezhiying/document_forgery/document_forgery/results/20211027080302/weights/srnet_epoch_4_best.pth'
+
+datasets:
+    data_srnet:
+      train:
+        dataset_name: 'data_srnet'
+        data_list_path: ''
+        data_dir: ''
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_sk_dir: 't_sk'
+        t_t_dir: 't_t'
+        t_b_dir: 't_b'
+        t_f_dir: 't_f'
+        mask_t_dir: 'mask_t'
+      valid:
+        dataset_name: 'valid_data'
+        data_list_path: ''
+        data_dir: ''
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_f_dir: 't_f'
+      test:
+        dataset_name: 'test_data'
+        data_list_path: ''
+        data_dir: ''
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_f_dir: 't_f'
+    
+    data_imgur5k:
+      train:
+        dataset_name: 'data_imgur5k'
+        data_list_path: ''
+        data_dir: ''        
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_s_dir: 't_s'
+      valid:
+        dataset_name: 'valid_data'
+        data_list_path: ''
+        data_dir: ''    
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_s_dir: 't_s'
+      test:
+        dataset_name: 'test_data'
+        data_list_path: ''
+        data_dir: '' 
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_s_dir: 't_s'
+
+loss_params:
+  epsilon: 0.00000001
+  lt: 1.0
+  lt_alpha: 1.0
+  lb: 1.0
+  lb_beta: 10.0
+  lf: 1.0
+  lf_theta_1: 10.0
+  lf_theta_2: 1.0
+  lf_theta_3: 500.0    
+
+optimizer_params:
+  Adam:
+    lr: 0.0001
+    beta1: 0.9
+    beta2: 0.999

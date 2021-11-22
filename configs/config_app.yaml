@@ -1,0 +1,86 @@
+config_name: 'base'
+
+mode: 'test'  #train, test, infer
+gpu: [0,1]
+local_rank: 0
+world_size: 1
+workers: 2
+seed: 111
+use_amp: False
+parallel_type: 'Single'  # Single , DataParallel, Distributed, Distributed_Apex, Horovod 
+
+
+data_type: 'data1'
+batch_size: 1
+max_iters: 2 #500000 
+data_shape: [63, None]
+model_type: 'srnet'
+optimizer_type: 'Adam'
+train_log_interval: 1 #50
+valid_interval: 1 #1000
+test_interval: 1
+save_ckpt_interval: 1 #5000
+is_load_weight: True
+
+save:
+  #result_path: './results'
+  #result_path: '/data/kzy/results_chinese'
+  result_path: './tmp'
+  result_path2: './tmp'
+  #result_path2: '/home/kezhiying/results_chinese'
+  record_name: 'test'
+  log_path: 'logs'
+  train_checkpoint_file: 'train_log.txt'
+  valid_sample_path: 'valid_samples'
+  test_sample_path: 'test_samples'
+  save_weigth_path: 'weights'
+  
+
+load:
+    #load_weight_path: '/home/kezhiying/document_forgery/SRNet_pytorch/logs/train_step-299000.model.bak'
+    #load_weight_path: '/data/kzy/results_chinese2/20211108031308/weights/srnet_epoch_400000.pth'
+    load_weight_path: '/data/kzy/results_chinese3/20211108184743/weights/srnet_epoch_450000.pth'
+datasets:
+    data1:
+      train:
+        dataset_name: 'train_data'
+        data_list_path: '/home/kezhiying/document_forgery/SRNet_pytorch/content/total_train.txt'
+        #data_dir: '/home/kezhiying/document_forgery/SRNet_pytorch/content/srnet_data'
+        data_dir: '/home/kezhiying/srnet_data_chinese'
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_sk_dir: 't_sk'
+        t_t_dir: 't_t'
+        t_b_dir: 't_b'
+        t_f_dir: 't_f'
+        mask_t_dir: 'mask_t'
+      valid:
+        dataset_name: 'valid_data'
+        data_list_path: '/home/kezhiying/data_doc/srnet_data_chinese_test_withlabel/name.txt'
+        data_dir: '/home/kezhiying/data_doc/srnet_data_chinese_test_withlabel/' 
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+      test:
+        dataset_name: 'test_data'
+        data_list_path: '/home/kezhiying/data_doc/srnet_data_chinese_test_withlabel/name.txt'
+        data_dir: '/home/kezhiying/data_doc/srnet_data_chinese_test_withlabel/' 
+        i_t_dir: 'i_t'
+        i_s_dir: 'i_s'
+        t_f_dir: 't_f'
+
+loss_params:
+  epsilon: 0.00000001
+  lt: 1.0
+  lt_alpha: 1.0
+  lb: 1.0
+  lb_beta: 10.0
+  lf: 1.0
+  lf_theta_1: 10.0
+  lf_theta_2: 1.0
+  lf_theta_3: 500.0    
+
+optimizer_params:
+  Adam:
+    lr: 0.0001
+    beta1: 0.9
+    beta2: 0.999
